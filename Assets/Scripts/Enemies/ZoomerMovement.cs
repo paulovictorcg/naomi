@@ -26,7 +26,7 @@ public class ZoomerMovement : MonoBehaviour
         }
         currentMovementTime += Time.deltaTime;
 
-        rigidBody.velocity =
-            new Vector2(walkingRight ? moveSpeed : -moveSpeed, rigidBody.velocity.y);
+        rigidBody.linearVelocity =
+            new Vector2(walkingRight ? moveSpeed : -moveSpeed, rigidBody.linearVelocity.y);
     }
 }

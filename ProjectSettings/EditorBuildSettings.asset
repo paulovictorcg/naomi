@@ -7,3 +7,9 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/game.unity
+    guid: 10818caf77e9e514299beadc0364e788
+  - enabled: 0
+    path: Assets/Warped Caves/Scenes/demo.unity
+    guid: b64f59e4f29f04fd2af9c68a380019d5
+  m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

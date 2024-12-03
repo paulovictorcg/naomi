@@ -8,7 +8,11 @@ public class CharacterMovement : MonoBehaviour
     public bool facingRight = true;
     public float moveSpeedX;
     public float moveSpeedY;
-
+    public float trava = 0;
+    public bool canChancheBodyState = true;
+    //joystick
+    public short minAnalogValue = -1;
+    public short maxAnalogValue = 1;
     // Character State
     public int bodyState = 0;
     public int bodyStateAir = 0;
@@ -18,7 +22,7 @@ public class CharacterMovement : MonoBehaviour
     private const float playerStandingColliderheigthConst = .43f;
     private const float playerOnKneesColliderheigthConst = .33f;
     private const float playerAsBallColliderheigthConst = .0f;
-
+    private bool isTravaActive = false;
     // Jumps
     public int maxJumpCount = 5;
     public int jumpCount = 0;
@@ -118,7 +122,9 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        anim.SetFloat("MoveSpeedX", moveSpeedX);
+        if(trava != 1)
+            anim.SetFloat("MoveSpeedX", moveSpeedX);
+
         anim.SetFloat("MoveSpeedY", moveSpeedY);
         anim.SetBool("GoingUp", goingUp);
         anim.SetInteger("BodyState", bodyState);
@@ -146,23 +152,31 @@ public class CharacterMovement : MonoBehaviour
         touchingObstacle =
             Physics2D.OverlapCircle(obstacleCheck.position, groundRadius, whatIsObstacle);
 
+            // Adicione logs para depuração
+        // Debug.Log("obstáculo posição " + obstacleCheck.position);
+        // Debug.Log("Grounded: " + grounded);
+        // Debug.Log("Touching Obstacle: " + touchingObstacle);
+
         // En funcion del movimiento se cambia la orientacion del personaje
         if ((moveSpeedX > 0.0f && !facingRight) || (moveSpeedX < 0.0f && facingRight)) { Flip(); }
 
         // Mientras ocurre el giro del personaje no ocurre movimiento
         if (!turning)
         {
+              Debug.Log("Entrei :)");
             anim.SetBool("Turning", turning);
             // Si se toca un obstaculo se para el movimiento del cuerpo
-            if (!touchingObstacle)
-                rigidbody.velocity =
-                new Vector2(moveSpeedX * maxSpeed, rigidbody.velocity.y);
+
+             if (!touchingObstacle && trava != 1)
+                 rigidbody.linearVelocity = new Vector2(moveSpeedX * maxSpeed, rigidbody.linearVelocity.y);
         }
+
     }
 
     void AdjustBody()
     {
-        // Se ajusta el collider del cuerpo y el punto de checkeo del suelo de acuerdo al tamanno del cuerpo
+
+            // Se ajusta el collider del cuerpo y el punto de checkeo del suelo de acuerdo al tamanno del cuerpo
         if (bodyState == playerStandingConst && collider.height != playerStandingColliderheigthConst)
         {
             collider.height = playerStandingColliderheigthConst;
@@ -184,6 +198,7 @@ public class CharacterMovement : MonoBehaviour
             groundCheck.transform.localPosition = new Vector2(0, -0.0808f);
             bodyState = bodyStateAir;
         }
+    
     }
     void HandleAimingDirection()
     {
@@ -245,16 +260,36 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("velocidade " + rigidbody.linearVelocity);
+        if(grounded)
+        Debug.Log("No chão");
+        else
+        Debug.Log("No ar");
+      
         // Se captura la direccion y velocidad del movimiento horizontal
 
         // Controles para movil:
-        //moveSpeedX = CrossPlatformInputManager.GetAxis("Horizontal") > .2f ? 1 : CrossPlatformInputManager.GetAxis("Horizontal") < -.2f ? -1 : 0;
-        //moveSpeedY = CrossPlatformInputManager.GetAxis("Vertical") > .2f ? 1 : CrossPlatformInputManager.GetAxis("Vertical") < -.2f ? -1 : 0;
+         moveSpeedX = CrossPlatformInputManager.GetAxis("Horizontal") > .2f ? 1 : CrossPlatformInputManager.GetAxis("Horizontal") < -.2f ? -1 : 0;
+         moveSpeedY = CrossPlatformInputManager.GetAxis("Vertical") > .2f ? 1 : CrossPlatformInputManager.GetAxis("Vertical") < -.2f ? -1 : 0;
 
         // Controles PC
-        //moveSpeedX = Input.GetAxis("Horizontal");
-        moveSpeedX = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
-        moveSpeedY = Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0;
+        if(moveSpeedX == 0)
+            moveSpeedX = Input.GetAxis("Horizontal");
+        if(moveSpeedX == 0)
+            moveSpeedX = Input.GetAxis("DPadHorizontal");
+        if(moveSpeedX == 0)
+            moveSpeedX = Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0;
+       
+        if(moveSpeedY == 0)
+            moveSpeedY = Input.GetAxis("Vertical");
+        if(moveSpeedY == 0) 
+            moveSpeedY = Input.GetAxis("DPadVertical");
+        if(moveSpeedY == 0)
+            moveSpeedY = Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0;
+
+        if(moveSpeedX != 0)
+        if(moveSpeedX == 0 && Input.GetAxis("Trava") != 0)
+            trava = Input.GetAxis("Trava");
 
         HandleBodyState();
         HandleJump();
@@ -292,13 +327,25 @@ public class CharacterMovement : MonoBehaviour
 
     }
 
+
     void HandleBodyState()
     {
         if (grounded)
         {
-            if (Input.GetKeyDown(KeyCode.S) && moveSpeedX == 0) { bodyState = bodyState < 2 ? bodyState + 1 : 2; }
-            else if (Input.GetKeyDown(KeyCode.W)) { bodyState = bodyState > 0 ? bodyState - 1 : 0; }
-            if (moveSpeedX != 0 && bodyState == playerOnKneesConst) bodyState = playerStandingConst;
+
+            if (moveSpeedY <= -0.5f && moveSpeedX == 0 && canChancheBodyState) 
+                 bodyState = bodyState < 2 ? bodyState + 1 : 2; 
+            else if (moveSpeedY == 1) 
+                 bodyState = bodyState > 0 ? bodyState - 1 : 0; 
+            
+            if (moveSpeedX != 0 && bodyState == playerOnKneesConst) 
+                bodyState = playerStandingConst;
+
+            if (moveSpeedY <= -0.5f)
+                canChancheBodyState = false; // Prevents from changing body state while analog stick is not in max value
+            if(moveSpeedY == 0)
+                canChancheBodyState = true;
+
         }
         else
         {
@@ -318,8 +365,11 @@ public class CharacterMovement : MonoBehaviour
 
     void HandleJump()
     {
+        
+        //  Debug.Log("Botão x " + rigidbody.linearVelocity.x);
+        //           Debug.Log("Botão y " + rigidbody.linearVelocity.y);
         // Se captura la direccion del salto para reaccionar en caida libre y animaciones
-        if (rigidbody.velocity.y >= 0.5f) goingUp = true; else goingUp = false;
+        if (rigidbody.linearVelocity.y >= 0.5f) goingUp = true; else goingUp = false;
 
         if (CrossPlatformInputManager.GetButtonDown("Jump"))
         {
@@ -345,7 +395,38 @@ public class CharacterMovement : MonoBehaviour
                 bodyStateAir = playerStandingConst;
             }
         }
-        if (CrossPlatformInputManager.GetButtonUp("Jump") && goingUp) { rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0f); }
+        if (CrossPlatformInputManager.GetButtonUp("Jump") && rigidbody.linearVelocity.y >= 0f) 
+        {
+            
+             rigidbody.linearVelocity = new Vector2(rigidbody.linearVelocity.x, 0f);
+        }
+        
+        Vector2 vectorA = new Vector2(1.0f, 2.0f);
+        Vector2 vectorB = new Vector2(1.0f, 2.0f);
+        if (vectorA == vectorB)
+        {
+            Debug.Log("Iguais");
+        }
+        else
+        {
+            Debug.Log("Diferentes");
+        }
+        if(!grounded && rigidbody.linearVelocity == (new Vector3(0.0f, 0.0f, 0.0f)))
+        {
+             Debug.Log("Entrei ");
+            rigidbody.AddForce(new Vector2(0.0f, -10f));
+        }
+
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+          Debug.Log("OnCollisionEnter!");
+        // Verifica se o objeto colidido tem a tag "Obstacle"
+        if (collision.gameObject.tag == "Obstacle")
+        {
+          
+            // Adicione a lógica de resposta à colisão aqui
+        }
     }
 
     void Flip()
@@ -383,14 +464,14 @@ public class CharacterMovement : MonoBehaviour
         clone =
             Instantiate(currentWeaponPrefab, newPosition, newRotation) as Rigidbody;
         // Se otorga inicialmente la velocidad actual del jugador a la bala
-        clone.velocity = rigidbody.velocity;
+        clone.linearVelocity = rigidbody.linearVelocity;
         // Si se apunta horizontalmente se quita la componente <y> de la velocidad
         // para que los tiros tengan trayectoria horizontal recta
         if (aimingDirection == aimingFrontConst || aimingDirection == aimingIdleConst)
         {
-            Vector2 horizontalOnlyVelocity = clone.velocity;
+            Vector2 horizontalOnlyVelocity = clone.linearVelocity;
             horizontalOnlyVelocity.y = 0;
-            clone.velocity = horizontalOnlyVelocity;
+            clone.linearVelocity = horizontalOnlyVelocity;
         }
         // Luego se annade la propia velocidad del disparo
         clone.AddForce(currentShotSpawn.transform.right * shotSpeed);

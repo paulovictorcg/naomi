@@ -48,45 +48,45 @@ public abstract class e2dTerrainMesh
 	/// Makes sure the sub-objects of the main game object are read to use.
 	protected void ResetMeshObjectsTransforms()
 	{
-		transform.FindChild(e2dConstants.FILL_MESH_NAME).transform.localPosition = Vector3.zero;
-		transform.FindChild(e2dConstants.FILL_MESH_NAME).transform.localRotation = Quaternion.identity;
-		transform.FindChild(e2dConstants.FILL_MESH_NAME).transform.localScale = Vector3.one;
+		transform.Find(e2dConstants.FILL_MESH_NAME).transform.localPosition = Vector3.zero;
+		transform.Find(e2dConstants.FILL_MESH_NAME).transform.localRotation = Quaternion.identity;
+		transform.Find(e2dConstants.FILL_MESH_NAME).transform.localScale = Vector3.one;
 
-		transform.FindChild(e2dConstants.CURVE_MESH_NAME).transform.localPosition = Vector3.zero;
-		transform.FindChild(e2dConstants.CURVE_MESH_NAME).transform.localRotation = Quaternion.identity;
-		transform.FindChild(e2dConstants.CURVE_MESH_NAME).transform.localScale = Vector3.one;
+		transform.Find(e2dConstants.CURVE_MESH_NAME).transform.localPosition = Vector3.zero;
+		transform.Find(e2dConstants.CURVE_MESH_NAME).transform.localRotation = Quaternion.identity;
+		transform.Find(e2dConstants.CURVE_MESH_NAME).transform.localScale = Vector3.one;
 
-		transform.FindChild(e2dConstants.GRASS_MESH_NAME).transform.localPosition = Vector3.zero;
-		transform.FindChild(e2dConstants.GRASS_MESH_NAME).transform.localRotation = Quaternion.identity;
-		transform.FindChild(e2dConstants.GRASS_MESH_NAME).transform.localScale = Vector3.one;
+		transform.Find(e2dConstants.GRASS_MESH_NAME).transform.localPosition = Vector3.zero;
+		transform.Find(e2dConstants.GRASS_MESH_NAME).transform.localRotation = Quaternion.identity;
+		transform.Find(e2dConstants.GRASS_MESH_NAME).transform.localScale = Vector3.one;
 
-		transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).transform.localPosition = Vector3.zero;
-		transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).transform.localRotation = Quaternion.identity;
-		transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).transform.localScale = Vector3.one;
+		transform.Find(e2dConstants.COLLIDER_MESH_NAME).transform.localPosition = Vector3.zero;
+		transform.Find(e2dConstants.COLLIDER_MESH_NAME).transform.localRotation = Quaternion.identity;
+		transform.Find(e2dConstants.COLLIDER_MESH_NAME).transform.localScale = Vector3.one;
 	}
 
 	/// Makes sure the sub-objects of the main game object exist. They carry the mesh data.
 	protected void EnsureMeshObjectsExist()
 	{
-		if (transform.FindChild(e2dConstants.FILL_MESH_NAME) == null)
+		if (transform.Find(e2dConstants.FILL_MESH_NAME) == null)
 		{
 			GameObject go = new GameObject(e2dConstants.FILL_MESH_NAME);
 			go.transform.parent = transform;
 		}
 
-		if (transform.FindChild(e2dConstants.CURVE_MESH_NAME) == null)
+		if (transform.Find(e2dConstants.CURVE_MESH_NAME) == null)
 		{
 			GameObject go = new GameObject(e2dConstants.CURVE_MESH_NAME);
 			go.transform.parent = transform;
 		}
 
-		if (transform.FindChild(e2dConstants.GRASS_MESH_NAME) == null)
+		if (transform.Find(e2dConstants.GRASS_MESH_NAME) == null)
 		{
 			GameObject go = new GameObject(e2dConstants.GRASS_MESH_NAME);
 			go.transform.parent = transform;
 		}
 
-		if (transform.FindChild(e2dConstants.COLLIDER_MESH_NAME) == null)
+		if (transform.Find(e2dConstants.COLLIDER_MESH_NAME) == null)
 		{
 			GameObject go = new GameObject(e2dConstants.COLLIDER_MESH_NAME);
 			go.transform.parent = transform;
@@ -100,22 +100,22 @@ public abstract class e2dTerrainMesh
 
 		GameObject meshObject;
 
-		meshObject = transform.FindChild(e2dConstants.FILL_MESH_NAME).gameObject;
+		meshObject = transform.Find(e2dConstants.FILL_MESH_NAME).gameObject;
 		EnsureMeshFilterExists(meshObject);
 		EnsureMeshRendererExists(meshObject);
 		EnsureScriptsAttached(meshObject);
 
-		meshObject = transform.FindChild(e2dConstants.CURVE_MESH_NAME).gameObject;
+		meshObject = transform.Find(e2dConstants.CURVE_MESH_NAME).gameObject;
 		EnsureMeshFilterExists(meshObject);
 		EnsureMeshRendererExists(meshObject);
 		EnsureScriptsAttached(meshObject);
 
-		meshObject = transform.FindChild(e2dConstants.GRASS_MESH_NAME).gameObject;
+		meshObject = transform.Find(e2dConstants.GRASS_MESH_NAME).gameObject;
 		EnsureMeshFilterExists(meshObject);
 		EnsureMeshRendererExists(meshObject);
 		EnsureScriptsAttached(meshObject);
 
-		meshObject = transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).gameObject;
+		meshObject = transform.Find(e2dConstants.COLLIDER_MESH_NAME).gameObject;
 		EnsureMeshColliderExists(meshObject);
 		EnsureScriptsAttached(meshObject);
 	}
@@ -180,10 +180,10 @@ public abstract class e2dTerrainMesh
 	public void DeleteAllSubobjects()
 	{
 		EnsureMeshObjectsExist();
-		Object.DestroyImmediate(transform.FindChild(e2dConstants.FILL_MESH_NAME).gameObject);
-		Object.DestroyImmediate(transform.FindChild(e2dConstants.CURVE_MESH_NAME).gameObject);
-		Object.DestroyImmediate(transform.FindChild(e2dConstants.GRASS_MESH_NAME).gameObject);
-		Object.DestroyImmediate(transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).gameObject);
+		Object.DestroyImmediate(transform.Find(e2dConstants.FILL_MESH_NAME).gameObject);
+		Object.DestroyImmediate(transform.Find(e2dConstants.CURVE_MESH_NAME).gameObject);
+		Object.DestroyImmediate(transform.Find(e2dConstants.GRASS_MESH_NAME).gameObject);
+		Object.DestroyImmediate(transform.Find(e2dConstants.COLLIDER_MESH_NAME).gameObject);
 	}
 
 }

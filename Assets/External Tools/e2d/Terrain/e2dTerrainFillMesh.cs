@@ -23,12 +23,12 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 		get
 		{
 			EnsureMeshComponentsExist();
-			return transform.FindChild(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>();
+			return transform.Find(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>();
 		}
 	}
 
 	/// Returns the object carrying the mesh.
-	public GameObject gameObject { get { return transform.FindChild(e2dConstants.FILL_MESH_NAME).gameObject; } }
+	public GameObject gameObject { get { return transform.Find(e2dConstants.FILL_MESH_NAME).gameObject; } }
 
 
 #region Mesh
@@ -67,7 +67,7 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 		}
 
 		// set the result to the mesh
-		MeshFilter filter = transform.FindChild(e2dConstants.FILL_MESH_NAME).GetComponent<MeshFilter>();
+		MeshFilter filter = transform.Find(e2dConstants.FILL_MESH_NAME).GetComponent<MeshFilter>();
 		filter.sharedMesh.Clear();
 		filter.sharedMesh.vertices = vertices;
 		filter.sharedMesh.normals = normals;
@@ -81,7 +81,7 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 	/// Returns true if the mesh is valid.
 	public bool IsMeshValid()
 	{
-		Transform meshObject = transform.FindChild(e2dConstants.FILL_MESH_NAME);
+		Transform meshObject = transform.Find(e2dConstants.FILL_MESH_NAME);
 		if (meshObject == null) return false;
 		MeshFilter filter = meshObject.GetComponent<MeshFilter>();
 		if (filter == null) return false;
@@ -155,7 +155,7 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 	{
 		EnsureMeshObjectsExist();
 
-		MeshFilter filter = transform.FindChild(e2dConstants.FILL_MESH_NAME).GetComponent<MeshFilter>();
+		MeshFilter filter = transform.Find(e2dConstants.FILL_MESH_NAME).GetComponent<MeshFilter>();
 		if (filter && filter.sharedMesh != null)
 		{
 			Object.DestroyImmediate(filter.sharedMesh);
@@ -163,7 +163,7 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 		// NOTE: can't do that since the objects are used after destroying the mesh
 		//Object.DestroyImmediate(filter);
 
-		MeshRenderer renderer = transform.FindChild(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>();
+		MeshRenderer renderer = transform.Find(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>();
 		if (renderer && renderer.sharedMaterials != null)
 		{
 			foreach (Material material in renderer.sharedMaterials)
@@ -185,7 +185,7 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 	{
 		EnsureMeshComponentsExist();
 
-		MeshRenderer renderer = transform.FindChild(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>();
+		MeshRenderer renderer = transform.Find(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>();
 
 		Material[] materials = renderer.sharedMaterials;
 		if (materials != null)
@@ -210,7 +210,7 @@ public class e2dTerrainFillMesh: e2dTerrainMesh
 	/// Returns true if some of the materials needed by the mesh are missing.
 	public bool SomeMaterialsMissing()
 	{
-		return transform.FindChild(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>().sharedMaterial == null;
+		return transform.Find(e2dConstants.FILL_MESH_NAME).GetComponent<MeshRenderer>().sharedMaterial == null;
 	}
 
 #endregion

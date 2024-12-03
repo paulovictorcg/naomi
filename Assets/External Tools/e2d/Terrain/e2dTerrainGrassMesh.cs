@@ -27,12 +27,12 @@ public class e2dTerrainGrassMesh : e2dTerrainMesh
 		get
 		{
 			EnsureMeshComponentsExist();
-			return transform.FindChild(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshRenderer>();
+			return transform.Find(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshRenderer>();
 		}
 	}
 
 	/// Returns the object carrying the mesh.
-	public GameObject gameObject { get { return transform.FindChild(e2dConstants.GRASS_MESH_NAME).gameObject; } }
+	public GameObject gameObject { get { return transform.Find(e2dConstants.GRASS_MESH_NAME).gameObject; } }
 
 
 #region Mesh
@@ -173,7 +173,7 @@ public class e2dTerrainGrassMesh : e2dTerrainMesh
 		UnityEngine.Random.seed = oldSeed;
 
 		// set the result to the mesh
-		MeshFilter filter = transform.FindChild(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshFilter>();
+		MeshFilter filter = transform.Find(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshFilter>();
 		filter.sharedMesh.Clear();
 		filter.sharedMesh.vertices = vertices;
 		filter.sharedMesh.normals = normals;
@@ -201,7 +201,7 @@ public class e2dTerrainGrassMesh : e2dTerrainMesh
 	{
 		EnsureMeshObjectsExist();
 
-		MeshFilter filter = transform.FindChild(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshFilter>();
+		MeshFilter filter = transform.Find(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshFilter>();
 		if (filter && filter.sharedMesh != null)
 		{
 			Object.DestroyImmediate(filter.sharedMesh);
@@ -209,7 +209,7 @@ public class e2dTerrainGrassMesh : e2dTerrainMesh
 		// NOTE: can't do that since the objects are used after destroying the mesh
 		//Object.DestroyImmediate(filter);
 
-		MeshRenderer renderer = transform.FindChild(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshRenderer>();
+		MeshRenderer renderer = transform.Find(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshRenderer>();
 		if (renderer && renderer.sharedMaterials != null)
 		{
 			foreach (Material material in renderer.sharedMaterials)
@@ -277,7 +277,7 @@ public class e2dTerrainGrassMesh : e2dTerrainMesh
 	/// Returns true if any materials needed by the mesh are missing in the game objects.
 	public bool SomeMaterialsMissing()
 	{
-		return transform.FindChild(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshRenderer>().sharedMaterial == null;
+		return transform.Find(e2dConstants.GRASS_MESH_NAME).GetComponent<MeshRenderer>().sharedMaterial == null;
 	}
 
 	/// Adds new texture to the end of the list.

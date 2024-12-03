@@ -24,12 +24,12 @@ public class e2dTerrainColliderMesh : e2dTerrainMesh
 		get
 		{
 			EnsureMeshComponentsExist();
-			return transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).GetComponent<MeshCollider>();
+			return transform.Find(e2dConstants.COLLIDER_MESH_NAME).GetComponent<MeshCollider>();
 		}
 	}
 
 	/// Returns the object carrying the mesh.
-	public GameObject gameObject { get { return transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).gameObject; } }
+	public GameObject gameObject { get { return transform.Find(e2dConstants.COLLIDER_MESH_NAME).gameObject; } }
 
 
 	/// Rebuilds the mesh from scratch deleting the old one if necessary.
@@ -78,7 +78,7 @@ public class e2dTerrainColliderMesh : e2dTerrainMesh
 		}
 
 		// set the result to the mesh
-		MeshCollider collider = transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).GetComponent<MeshCollider>();
+		MeshCollider collider = transform.Find(e2dConstants.COLLIDER_MESH_NAME).GetComponent<MeshCollider>();
 		collider.sharedMesh.Clear();
 		collider.sharedMesh.vertices = vertices;
 		collider.sharedMesh.triangles = triangles;
@@ -92,7 +92,7 @@ public class e2dTerrainColliderMesh : e2dTerrainMesh
 	{
 		EnsureMeshObjectsExist();
 
-		MeshCollider collider = transform.FindChild(e2dConstants.COLLIDER_MESH_NAME).GetComponent<MeshCollider>();
+		MeshCollider collider = transform.Find(e2dConstants.COLLIDER_MESH_NAME).GetComponent<MeshCollider>();
 		if (collider && collider.sharedMesh != null)
 		{
 			Object.DestroyImmediate(collider.sharedMesh);
